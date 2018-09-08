@@ -1,0 +1,154 @@
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/htmlelement-extension/distrib/htmlElement.min.js"></script>
+  <script src="modules/positionizer/distrib/positionizer.min.js"></script>
+</head>
+
+<body>
+  <div class="breadcrumb">
+    <a href="https://www.npmjs.com/package/positionizer" title="NPM">
+      <img src="https://sylvain59650.github.io/demonstrator/img/npm.png" height="32"></a>
+    <a href="https://github.com/Sylvain59650/positionizer" title="GitHub"><img src="https://github.com/favicon.ico" height="32" /></a>
+  </div>
+
+
+  <div id="el" style="position:absolute;top:300px;left:150px;border:solid 2px red;width:300px;height:250px">&nbsp;</div>
+
+  <div id="mainCircle" style="background-color:black;width:96px;height:96px;border-radius:50px;position:relative;left:50px;top:50px"></div>
+
+  <script>
+    var circlesInfo = [{
+        options: {
+          place: "top-left",
+          dist: {
+            x: -5,
+            y: -5
+          }
+        },
+        color: "blue"
+      }, {
+        options: {
+          place: "left",
+          dist: {
+            x: -5,
+            y: 0
+          }
+        },
+        color: "yellow"
+      },
+
+      {
+        options: {
+          place: "bottom-left",
+          dist: {
+            x: -5,
+            y: -5
+          }
+        },
+        color: "gray"
+      }, {
+        options: {
+          place: "bottom",
+          dist: {
+            x: -5,
+            y: -5
+          }
+        },
+        color: "green"
+      }, {
+        options: {
+          place: "right-bottom",
+          dist: {
+            x: -10,
+            y: -5
+          }
+        },
+        color: "black"
+      }, {
+        options: {
+          place: "bottom-right",
+          dist: {
+            x: -10,
+            y: -5
+          }
+        },
+        color: "marroon"
+      }, {
+        options: {
+          place: "right",
+          dist: {
+            x: -10,
+            y: -5
+          }
+        },
+        color: "orange"
+      }, {
+        options: {
+          place: "right-top",
+          dist: {
+            x: -10,
+            y: -5
+          }
+        },
+        color: "cyan"
+      }, {
+        options: {
+          place: "top-right",
+          dist: {
+            x: -10,
+            y: -5
+          }
+        },
+        color: "fuchsia"
+      }, {
+        options: {
+          place: "top",
+          dist: {
+            x: -5,
+            y: -5
+          }
+        },
+        color: "olive"
+      }
+    ];
+    var circles = [];
+
+    for (var i = 0; i < circlesInfo.length; i++) {
+      var ci = circlesInfo[i];
+      var c = newElement("div", {
+        id: "i" + i,
+        style: "background-color:" + ci.color + ";width:16px;height:16px;border-radius:12px",
+        title: ci.options.pos,
+        "z-index": 99
+      });
+      document.body.beforeEnd(c);
+      circles.push(c);
+
+      var attach = Positionizer.getAttach(el, ci.options);
+      Positionizer.setPosition(c, attach);
+    }
+
+
+    var main = qsi("mainCircle");
+    var attachMain = Positionizer.getAttach(main, {
+      place: "center"
+    });
+
+    var paper = Raphael(0, 0, 640, 780);
+
+    for (var i = 0; i < circles.length; i++) {
+      var c = circles[i];
+      var attach = Positionizer.getAttach(c, {
+        place: "center"
+      });
+      var pathString = "M" + attachMain.left + "," + attachMain.top + " L" + attach.left + "," + attach.top;
+      var line = paper.path(pathString);
+      line.attr("stroke-width", "2");
+      line.attr("stroke", circlesInfo[i].color);
+    }
+  </script>
+</body>
+
+</html>
